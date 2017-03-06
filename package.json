@@ -1,0 +1,46 @@
+{
+    "name": "nuget-package-manager",
+    "displayName": "NuGet Package Manager",
+    "description": "Search for and add/remove NuGet Packages in .NET Core projects via the Command Palette",
+    "version": "0.0.1",
+    "publisher": "jmrog",
+    "license": "MIT",
+    "keywords": ["nuget", "package", "search", "add", "remove", "install", ".net core", "csproj"],
+    "engines": {
+        "vscode": "^1.10.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.addNuGetPackage",
+        "onCommand:extension.removeNuGetPackage"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [{
+            "command": "extension.addNuGetPackage",
+            "title": "NuGet Package Manager: Add Package"
+        }, {
+            "command": "extension.removeNuGetPackage",
+            "title": "NuGet Package Manager: Remove Package"
+        }]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "dependencies": {
+        "node-fetch": "1.6.3",
+        "xml2js": "0.4.17"
+    },
+    "devDependencies": {
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32"
+    }
+}
