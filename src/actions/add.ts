@@ -1,18 +1,17 @@
+'use strict';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import fetch from 'node-fetch';
 import { parseString, Builder as XMLBuilder } from 'xml2js';
 
-import { getQueryString, find } from './utils/';
+import { getQueryString, find, showInformationMessage, showErrorMessage } from '../utils/';
 
 const xmlBuilder = new XMLBuilder();
 const emptyObject = {};
 const emptyArray = [];
 const NUGET_SEARCH_URL = "https://api-v2v3search-0.nuget.org/autocomplete";
 const NUGET_VERSIONS_URL = "https://api.nuget.org/v3-flatcontainer/";
-const showInformationMessage = vscode.window.showInformationMessage.bind(vscode.window);
-const showErrorMessage = vscode.window.showErrorMessage.bind(vscode.window);
 let projectName: string = '';
 let csprojFullPath: string = '';
 
@@ -96,6 +95,11 @@ function handleVersionsQuickPick({ selectedVersion, selectedPackageName }: { sel
             }
 
             parseString(data, (err, parsed: any = emptyObject) => {
+                if (err) {
+                    console.error(err);
+                    return reject(`Could not parse the csproj file at ${csprojFullPath}. Please try again.`);
+                }
+
                 const project = parsed.Project || emptyObject;
                 const itemGroup = project.ItemGroup || emptyArray;
                 const packageRefSection = itemGroup.find((group) => group.PackageReference);

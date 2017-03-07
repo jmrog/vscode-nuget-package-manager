@@ -1,3 +1,4 @@
+'use strict';
 const emptyString = '';
 
 export default function getQueryString(qsDefinition: QueryStringDefinition): string {
