@@ -1,16 +1,20 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-
 import fetch from 'node-fetch';
+import { parseString, Builder as XMLBuilder } from 'xml2js';
 
-import getQueryString from './utils/getQueryString';
+import { getQueryString, find } from './utils/';
 
-let projectName: string = '';
-let csprojFullPath: string = '';
-
+const xmlBuilder = new XMLBuilder();
+const emptyObject = {};
+const emptyArray = [];
 const NUGET_SEARCH_URL = "https://api-v2v3search-0.nuget.org/autocomplete";
 const NUGET_VERSIONS_URL = "https://api.nuget.org/v3-flatcontainer/";
+const showInformationMessage = vscode.window.showInformationMessage.bind(vscode.window);
+const showErrorMessage = vscode.window.showErrorMessage.bind(vscode.window);
+let projectName: string = '';
+let csprojFullPath: string = '';
 
 function showSearchBox() {
     return vscode.window.showInputBox({
@@ -76,7 +80,7 @@ function handleVersionsResponse({ response, selectedPackageName }: { response: R
         }
         catch (ex) {
             console.error(ex);
-            return Promise.reject('Could not parse the NuGet versions response. Please try again later.');
+            return Promise.reject('Could not parse the versioning information from the NuGet repository. Please try again later.');
         }
     });
 }
@@ -88,20 +92,70 @@ function handleVersionsQuickPick({ selectedVersion, selectedPackageName }: { sel
         fs.readFile(csprojFullPath, 'utf8', (err, data) => {
             if (err) {
                 console.error(err);
-                return reject(`Could not read the csproj file at ${csprojFullPath}. Please try again later.`);
+                return reject(`Could not read the csproj file at ${csprojFullPath}. Please try again.`);
             }
 
-            console.log(data);
+            parseString(data, (err, parsed: any = emptyObject) => {
+                const project = parsed.Project || emptyObject;
+                const itemGroup = project.ItemGroup || emptyArray;
+                const packageRefSection = itemGroup.find((group) => group.PackageReference);
+            
+                if (!packageRefSection) {
+                    return reject(`Could not locate package references in ${csprojFullPath}. Please try again.`);
+                }
+
+                const packageReferences = packageRefSection.PackageReference;
+                const existingReference = packageReferences.find((ref) => ref.$ && ref.$.Include === selectedPackageName);
+                const newReference = {
+                    $: {
+                        Include: selectedPackageName,
+                        Version: selectedVersion
+                    }
+                };
+
+                // Mutation is okay here; we're just dealing with a temporary in-memory JS representation.
+                if (!existingReference) {
+                    packageReferences.push(newReference);
+                }
+                else {
+                    packageReferences[packageReferences.indexOf(existingReference)] = newReference;
+                }
+
+                resolve({
+                    contents: parsed,
+                    selectedPackageName,
+                    selectedVersion
+                });
+            });
         });
+    });
+}
+
+function writeFile({ contents, selectedPackageName, selectedVersion }) {
+    return new Promise((resolve, reject) => {
+        try {
+            const xml = xmlBuilder.buildObject(contents);
+            fs.writeFile(csprojFullPath, xml, (err) => {
+                if (err) {
+                    console.error(err);
+                    return reject('Failed to write an updated .csproj file. Please try again later.');
+                }
+
+                return resolve(`Success! Wrote ${selectedPackageName}@${selectedVersion} to ${csprojFullPath}. Run dotnet restore to update your project.`);
+            });
+        }
+        catch (ex) {
+            console.error(ex);
+            return reject('Failed to write an updated .csproj file. Please try again later.');
+        }
     });
 }
 
 export function addNuGetPackage() {
     if (!projectName || !csprojFullPath) {
         const { rootPath } = vscode.workspace;
-        // FIXME: projectName = path.basename(rootPath);
-        projectName = 'fake';
-        csprojFullPath = path.join('wut', `${projectName}.csproj`);
+        projectName = path.basename(rootPath);
+        csprojFullPath = path.join(rootPath, `${projectName}.csproj`);
     }
 
     showSearchBox()
@@ -109,6 +163,8 @@ export function addNuGetPackage() {
         .then(handleSearchResponse)
         .then(handlePackageQuickPick)
         .then(handleVersionsResponse)
-        .then(handleVersionsQuickPick);
+        .then(handleVersionsQuickPick)
+        .then(writeFile)
+        .then(showInformationMessage, showErrorMessage);
 }
 
