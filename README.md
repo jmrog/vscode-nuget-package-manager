@@ -4,8 +4,8 @@ An extension for Visual Studio Code that lets you easily add or remove
 .NET Core 1.1+ package references to/from your project's `.csproj` file
 using Code's Command Palette.
 
-**NOTE:** This extension is in **_alpha_** status. It seems to work for me,
-but may break for you, and it makes a number of assumptions (some listed
+**NOTE:** THIS EXTENSION IS IN **_ALPHA_** STATUS. It seems to work for me,
+but it **may break for you**, and it makes a number of assumptions (some listed
 below) that may not be true in all cases. Please feel free to report
 issues. There are still lots of things TODO.
 
