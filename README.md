@@ -15,8 +15,13 @@ issues. There are still lots of things TODO.
 or full) package name or another search term.
 - Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` file
 from Visual Studio Code's Command Palette.
+
+![Adding a Package](./images/add-package.gif)
+
 - Remove installed packages from your project's `.csproj` file via Visual
 Studio Code's Command Palette.
+
+![Removing a Package](./images/remove-package.gif)
 
 ## Known Issues
 
