@@ -1,8 +1,8 @@
 {
-    "name": "nuget-package-manager",
+    "name": "vscode-nuget-package-manager",
     "displayName": "NuGet Package Manager",
-    "description": "Search for and add/remove NuGet Packages in .NET Core projects via the Command Palette",
-    "version": "0.0.1",
+    "description": "An extension for Visual Studio Code that lets you easily add or remove .NET Core 1.1+ package references to/from your project's .csproj file using Code's Command Palette.",
+    "version": "0.0.1-alpha",
     "publisher": "jmrog",
     "license": "MIT",
     "keywords": ["nuget", "package", "search", "add", "remove", "install", ".net core", "csproj"],
