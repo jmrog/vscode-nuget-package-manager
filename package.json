@@ -4,6 +4,7 @@
     "description": "An extension for Visual Studio Code that lets you easily add or remove .NET Core 1.1+ package references to/from your project's .csproj file using Code's Command Palette.",
     "version": "0.0.1-alpha",
     "publisher": "jmrog",
+    "author": "Jason Rogers <jason@jmichaelrogers.com>",
     "license": "MIT",
     "keywords": ["nuget", "package", "search", "add", "remove", "install", ".net core", "csproj"],
     "engines": {
@@ -42,5 +43,13 @@
         "mocha": "^2.3.3",
         "@types/node": "^6.0.40",
         "@types/mocha": "^2.2.32"
+    },
+    "bugs": {
+        "url": "https://github.com/jmrog/vscode-nuget-package-manager/issues"
+    },
+    "homepage": "https://github.com/jmrog/vscode-nuget-package-manager/blob/master/README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jmrog/vscode-nuget-package-manager.git"
     }
 }
