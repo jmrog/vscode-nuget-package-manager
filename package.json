@@ -6,7 +6,7 @@
     "publisher": "jmrog",
     "author": "Jason Rogers <jason@jmichaelrogers.com>",
     "license": "MIT",
-    "keywords": ["nuget", "package", "search", "add", "remove", "install", ".net core", "csproj"],
+    "keywords": ["nuget", "package", "manager", "csproj", ".net core", "add", "remove", "install"],
     "engines": {
         "vscode": "^1.10.0"
     },
