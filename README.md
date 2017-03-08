@@ -7,7 +7,7 @@ using Code's Command Palette.
 **NOTE:** This extension is in _alpha_ status. It seems to work for me,
 but may break for you, and it makes a number of assumptions (some listed
 below) that may not be true in all cases. Please feel free to report
-issues.
+issues. There are still lots of things TODO.
 
 ## Features
 
