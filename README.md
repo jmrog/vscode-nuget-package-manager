@@ -1,65 +1,34 @@
-# nuget-package-manager README
+# vscode-nuget-package-manager
 
-This is the README for your extension "nuget-package-manager". After writing up a brief description, we recommend including the following sections.
+An extension for Visual Studio Code that lets you easily add or remove 
+.NET Core 1.1+ package references to/from your project's `.csproj` file
+using Code's Command Palette.
+
+**NOTE:** This extension is in _alpha_ status. It seems to work for me,
+but may break for you, and it makes a number of assumptions (some listed
+below) that may not be true in all cases. Please feel free to report
+issues.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+- Search the NuGet package repository for packages using either (partial
+or full) package name or another search term.
+- Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` file
+from Visual Studio Code's Command Palette.
+- Remove installed packages from your project's `.csproj` file via Visual
+Studio Code's Command Palette.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- This extension only works with `.csproj` files for now; it may also
+support (deprecated) `project.json` files in the future.
+- The extension assumes that your project's `.csproj` file has the same
+name as the directory name in which your project resides.
+- The extension does not add DotNetCliToolsReference entries for tools.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1-alpha
 
-### 1.0.0
+Initial release.
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
