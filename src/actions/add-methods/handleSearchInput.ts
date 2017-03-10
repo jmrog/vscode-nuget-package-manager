@@ -1,8 +1,8 @@
 'use strict';
 import * as vscode from 'vscode';
+import * as qs from 'querystring';
 import fetch from 'node-fetch';
 
-import { getQueryString } from '../../utils';
 import { CANCEL, NUGET_SEARCH_URL } from '../../constants';
 
 export default function handleSearchInput(input: string | undefined): Promise<Response> {
@@ -13,7 +13,7 @@ export default function handleSearchInput(input: string | undefined): Promise<Re
 
     vscode.window.setStatusBarMessage('Searching NuGet...');
 
-    return fetch(`${NUGET_SEARCH_URL}?` + getQueryString({
+    return fetch(`${NUGET_SEARCH_URL}?` + qs.stringify({
         q: input,
         prerelease: 'true',
         take: '100'
