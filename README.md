@@ -33,6 +33,11 @@ name as the directory name in which your project resides.
 
 ## Release Notes
 
+### 0.0.2
+- Remove `getQueryString` utility and use Node's querystring module
+- Add slightly better error handling in Promise chain
+- Update versioning; vsce only allows x.x.x
+
 ### 0.0.1-alpha
 
 Initial release.
