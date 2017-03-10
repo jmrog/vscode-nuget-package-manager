@@ -32,7 +32,8 @@ export function addNuGetPackage() {
         .then(handleVersionsResponse)
         .then(handleVersionsQuickPick.bind(null, csprojFullPath))
         .then(writeFile.bind(null, csprojFullPath))
-        .then(showInformationMessage, (err) => {
+        .then(showInformationMessage)
+        .then(undefined, (err) => {
             clearStatusBar();
             if (err !== CANCEL) {
                 showErrorMessage(err);

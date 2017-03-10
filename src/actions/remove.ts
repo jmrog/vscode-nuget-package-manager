@@ -25,7 +25,8 @@ export function removeNuGetPackage() {
     readInstalledPackages(csprojFullPath)
         .then(showPackagesQuickPick)
         .then(deletePackageReference.bind(null, csprojFullPath))
-        .then(showInformationMessage, (err) => {
+        .then(showInformationMessage)
+        .then(undefined, (err) => {
             if (err !== CANCEL) {
                 showErrorMessage(err);
             }
