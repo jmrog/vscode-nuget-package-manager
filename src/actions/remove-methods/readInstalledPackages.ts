@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { parseString } from 'xml2js';
 
 import { handleError } from '../../utils';
-import { emptyObject, emptyArray } from '../../constants';
 
 export default function readInstalledPackages(csprojFullPath: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -16,7 +15,7 @@ export default function readInstalledPackages(csprojFullPath: string): Promise<a
                 );
             }
 
-            parseString(data, (err, parsed: any = emptyObject) => {
+            parseString(data, (err, parsed: any = {}) => {
                 if (err) {
                     return handleError(
                         err,
@@ -25,8 +24,8 @@ export default function readInstalledPackages(csprojFullPath: string): Promise<a
                     );
                 }
 
-                const project = parsed.Project || emptyObject;
-                const itemGroup = project.ItemGroup || emptyArray;
+                const project = parsed.Project || {};
+                const itemGroup = project.ItemGroup || [];
                 const packageRefSection = itemGroup.find((group) => group.PackageReference);
 
                 if (!packageRefSection || !packageRefSection.PackageReference.length) {

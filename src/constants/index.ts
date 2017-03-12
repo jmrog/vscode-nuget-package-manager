@@ -1,6 +1,4 @@
 'use strict';
-export const emptyObject = {};
-export const emptyArray = [];
 export const emptyString = '';
 
 export const NUGET_SEARCH_URL = "https://api-v2v3search-0.nuget.org/autocomplete";

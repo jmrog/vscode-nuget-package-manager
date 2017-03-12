@@ -2,8 +2,11 @@
 import * as fs from 'fs';
 import { parseString } from 'xml2js';
 
-import { emptyObject, emptyArray } from '../../constants';
-import { handleError } from '../../utils';
+import { handleError, createUpdatedProjectJson } from '../../utils';
+
+function getErrorMessage(verb, csprojFullPath) {
+    return `Could not ${verb} the file at ${csprojFullPath}. Please try again.`;
+}
 
 export default function handleVersionsQuickPick(csprojFullPath: string, { selectedVersion, selectedPackageName }: { selectedVersion: string, selectedPackageName: string }): Promise<any> {
     selectedVersion = selectedVersion.startsWith('Latest version') ? '*' : selectedVersion;
@@ -11,49 +14,25 @@ export default function handleVersionsQuickPick(csprojFullPath: string, { select
     return new Promise((resolve, reject) => {
         fs.readFile(csprojFullPath, 'utf8', (err, data) => {
             if (err) {
-                return handleError(
-                    err,
-                    `Could not read the csproj file at ${csprojFullPath}. Please try again.`,
-                    reject
-                );
+                return handleError(err, getErrorMessage('read', csprojFullPath), reject);
             }
 
-            parseString(data, (err, parsed: any = emptyObject) => {
+            parseString(data, (err, parsed: any = {}) => {
                 if (err) {
-                    return handleError(
-                        err,
-                        `Could not parse the csproj file at ${csprojFullPath}. Please try again.`,
-                        reject
-                    );
+                    return handleError(err, getErrorMessage('parse', csprojFullPath), reject);
                 }
 
-                const project = parsed.Project || emptyObject;
-                const itemGroup = project.ItemGroup || emptyArray;
-                const packageRefSection = itemGroup.find((group) => group.PackageReference);
-            
-                if (!packageRefSection) {
-                    return reject(`Could not locate package references in ${csprojFullPath}. Please try again.`);
-                }
+                let contents;
 
-                const packageReferences = packageRefSection.PackageReference;
-                const existingReference = packageReferences.find((ref) => ref.$ && ref.$.Include === selectedPackageName);
-                const newReference = {
-                    $: {
-                        Include: selectedPackageName,
-                        Version: selectedVersion
-                    }
-                };
-
-                // Mutation is okay here; we're just dealing with a temporary in-memory JS representation.
-                if (!existingReference) {
-                    packageReferences.push(newReference);
+                try {
+                    contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
                 }
-                else {
-                    packageReferences[packageReferences.indexOf(existingReference)] = newReference;
+                catch (ex) {
+                    return handleError(ex, getErrorMessage('parse', csprojFullPath), reject);
                 }
 
                 resolve({
-                    contents: parsed,
+                    contents,
                     selectedPackageName,
                     selectedVersion
                 });

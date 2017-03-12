@@ -1,0 +1,1 @@
+{"Project":{"$":{"Sdk":"Microsoft.NET.Sdk.Web"},"PropertyGroup":[{"TargetFramework":["netcoreapp1.0"]}],"ItemGroup":[{"Folder":[{"$":{"Include":"wwwroot\\"}}]},{"PackageReference":[{"$":{"Include":"Newtonsoft.Json","Version":"10.0.1-beta1"}},{"$":{"Include":"Microsoft.AspNet.Server.Kestrel","Version":"1.0.0-rc1-final"}}]}]}}
