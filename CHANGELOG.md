@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [0.0.3] - 2017-03-12
+- Add PackageReference even if no PackageReference section already exists (closes #5)
+- Add ItemGroup if no ItemGroup is found in project file
+- Add tests for some operations (partial progress on #1)
+
 ## [0.0.2] - 2017-03-09
 - Remove `getQueryString` utility and use Node's querystring module
 - Add slightly better error handling in Promise chain
