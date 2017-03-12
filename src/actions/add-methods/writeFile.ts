@@ -5,29 +5,25 @@ import { Builder as XMLBuilder } from 'xml2js';
 import { handleError } from '../../utils';
 
 const xmlBuilder = new XMLBuilder();
+const writeErrorMessage = 'Failed to write an updated .csproj file. Please try again later.';
 
 export default function writeFile(csprojFullPath: string, { contents, selectedPackageName, selectedVersion }): Promise<string> {
     return new Promise((resolve, reject) => {
-        try {
-            const xml = xmlBuilder.buildObject(contents);
-            fs.writeFile(csprojFullPath, xml, (err) => {
-                if (err) {
-                    return handleError(
-                        err,
-                        'Failed to write an updated .csproj file. Please try again later.',
-                        reject
-                    );
-                }
+        let xml;
 
-                return resolve(`Success! Wrote ${selectedPackageName}@${selectedVersion} to ${csprojFullPath}. Run dotnet restore to update your project.`);
-            });
+        try {
+            xml = xmlBuilder.buildObject(contents);
         }
         catch (ex) {
-            return handleError(
-                ex,
-                'Failed to write an updated .csproj file. Please try again later.',
-                reject
-            );
+            return handleError(ex, writeErrorMessage, reject);
         }
+
+        fs.writeFile(csprojFullPath, xml, (err) => {
+            if (err) {
+                return handleError(err, writeErrorMessage, reject);
+            }
+
+            return resolve(`Success! Wrote ${selectedPackageName}@${selectedVersion} to ${csprojFullPath}. Run dotnet restore to update your project.`);
+        });
     });
 }

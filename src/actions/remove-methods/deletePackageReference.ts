@@ -6,6 +6,7 @@ import { handleError } from '../../utils';
 import { CANCEL } from '../../constants';
 
 const xmlBuilder = new XMLBuilder();
+const writeErrorMessage = 'Failed to write an updated .csproj file. Please try again later.';
 
 export default function deletePackageReference(csprojFullPath, { selectedPackage, parsed, packageRefSection }: { selectedPackage: string | undefined, parsed: any, packageRefSection: any }): Promise<string> {
     if (!selectedPackage) {
@@ -28,27 +29,21 @@ export default function deletePackageReference(csprojFullPath, { selectedPackage
             itemGroup.splice(packageRefSectionIdx, 1);
         }
 
+        let xml;
+
         try {
-            const xml = xmlBuilder.buildObject(parsed);
-
-            fs.writeFile(csprojFullPath, xml, (err) => {
-                if (err) {
-                    return handleError(
-                        err,
-                        'Failed to write an updated .csproj file. Please try again later.',
-                        reject
-                    );
-                }
-
-                return resolve(`Success! Removed ${selectedPackageName}@${selectedPackageVersion} from ${csprojFullPath}. Run dotnet restore to update your project.`);
-            });
+            xml = xmlBuilder.buildObject(parsed);
         }
         catch (ex) {
-            return handleError(
-                ex,
-                'Failed to write an updated .csproj file. Please try again later.',
-                reject
-            );
+            return handleError(ex, writeErrorMessage, reject);
         }
+
+        fs.writeFile(csprojFullPath, xml, (err) => {
+            if (err) {
+                return handleError(err, writeErrorMessage, reject);
+            }
+
+            return resolve(`Success! Removed ${selectedPackageName}@${selectedPackageVersion} from ${csprojFullPath}. Run dotnet restore to update your project.`);
+        });
     });
 }

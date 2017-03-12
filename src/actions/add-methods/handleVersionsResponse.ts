@@ -10,26 +10,17 @@ export default function handleVersionsResponse({ response, selectedPackageName }
     }
 
     return response.json().then((json) => {
-        try {
-            const versions = json.versions.slice().reverse().concat('Latest version (Wildcard *)');
+        const versions = json.versions.slice().reverse().concat('Latest version (Wildcard *)');
 
-            return new Promise((resolve) => {
-                vscode.window.showQuickPick(versions, {
-                    placeHolder: 'Select the version to add.'
-                }).then((selectedVersion: string | undefined) => {
-                    if (!selectedVersion) {
-                        return Promise.reject(CANCEL);
-                    }
-                    resolve({ selectedVersion, selectedPackageName });
-                });
+        return new Promise((resolve) => {
+            vscode.window.showQuickPick(versions, {
+                placeHolder: 'Select the version to add.'
+            }).then((selectedVersion: string | undefined) => {
+                if (!selectedVersion) {
+                    return Promise.reject(CANCEL);
+                }
+                resolve({ selectedVersion, selectedPackageName });
             });
-        }
-        catch (ex) {
-            return handleError(
-                ex,
-                'Could not parse the versioning information from the NuGet repository. Please try again later.',
-                Promise.reject.bind(Promise)
-            );
-        }
+        });
     });
 }
