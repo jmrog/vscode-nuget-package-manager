@@ -55,5 +55,14 @@ export default function runCreateUpdatedProjectJsonTests() {
             const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/Empty.json', 'utf8'));
             assert.throws(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion), 'Throws');
         });
+
+        test('Immutability (does not modify passed-in JSON)', function () {
+            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/NoItemGroups.json', 'utf8'));
+            const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
+            const itemGroups = result.Project.ItemGroup;
+
+            assert.ok(itemGroups, 'Created JSON has an ItemGroup');
+            assert.ok(!json.Project.ItemGroup, 'Original JSON is not modified');
+        });
     });
 }
