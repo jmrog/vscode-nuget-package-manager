@@ -36,6 +36,9 @@ name as the directory name in which your project resides.
 
 ## Release Notes
 
+### 0.0.4
+- Updated "Known Issues" to mention #9, which seems important
+
 ### 0.0.3
 - Add PackageReference even if no PackageReference section already exists (closes #5)
 - Add ItemGroup if no ItemGroup is found in project file

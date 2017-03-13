@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [0.0.4] - 2017-03-13
+- Updated "Known Issues" to mention #9, which seems important
+
 ## [0.0.3] - 2017-03-12
 - Add PackageReference even if no PackageReference section already exists (closes #5)
 - Add ItemGroup if no ItemGroup is found in project file
