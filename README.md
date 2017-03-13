@@ -25,6 +25,9 @@ Studio Code's Command Palette.
 
 ## Known Issues
 
+- The XML-to-JavaScript parser that this extension uses currently strips out
+comments from the `.csproj` file. Unfortunately, there is no way around this
+at the moment, but the eventual plan is to replace this dependency.
 - This extension only works with `.csproj` files for now; it may also
 support (deprecated) `project.json` files in the future.
 - The extension assumes that your project's `.csproj` file has the same
