@@ -2,7 +2,7 @@
     "name": "vscode-nuget-package-manager",
     "displayName": "NuGet Package Manager",
     "description": "Add or remove .NET Core 1.1+ package references to/from your project's .csproj file using Code's Command Palette.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "jmrog",
     "author": "Jason Rogers <jason@jmichaelrogers.com>",
     "license": "MIT",
