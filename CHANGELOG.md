@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [0.1.0] - 2017-03-13
+- The "I'm a Dummy and Accidentally Typed 'Minor' Instead of 'Patch' When Publishing"
+release.
+- No actual changes; this is identical to v0.0.4, but VS Code won't let me unpublish
+specific versions and I initially typo'd the release number. :(
+
 ## [0.0.4] - 2017-03-13
 - Updated "Known Issues" to mention #9, which seems important
 
