@@ -36,6 +36,9 @@ name as the directory name in which your project resides.
 
 ## Release Notes
 
+### 0.1.1
+- Update preview images (and show both add and remove; closes #11)
+
 ### 0.1.0
 - The "I'm a Dummy and Accidentally Typed 'Minor' Instead of 'Patch' When Publishing"
 release. 

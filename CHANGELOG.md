@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [0.1.1] - 2017-03-15
+- Update preview images (and show both add and remove; closes #11)
+
 ## [0.1.0] - 2017-03-13
 - The "I'm a Dummy and Accidentally Typed 'Minor' Instead of 'Patch' When Publishing"
 release.
