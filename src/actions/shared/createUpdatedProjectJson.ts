@@ -1,5 +1,5 @@
 'use strict';
-import { isPlainObject } from '../utils/';
+import { isPlainObject } from '../../utils';
 
 /**
  * Generates a new JSON representation of the project file using `parsedProjectFile` as a basis.

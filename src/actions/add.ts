@@ -2,19 +2,20 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-import { showInformationMessage, showErrorMessage, clearStatusBar } from '../utils/';
+import { showInformationMessage, showErrorMessage, clearStatusBar } from './shared/';
 import { emptyString, CANCEL } from '../constants';
 import {
     showSearchBox,
-    handleSearchInput,
+    fetchPackages,
     handleSearchResponse,
-    handlePackageQuickPick,
+    showPackageQuickPick,
+    fetchPackageVersions,
     handleVersionsResponse,
+    showVersionsQuickPick,
     handleVersionsQuickPick,
     writeFile
 } from './add-methods';
 
-// TODO: Support project.json as well as .csproj
 let projectName = emptyString
 let csprojFullPath = emptyString;
 
@@ -26,12 +27,14 @@ export function addNuGetPackage() {
     }
 
     showSearchBox()
-        .then(handleSearchInput)
+        .then(fetchPackages)
         .then(handleSearchResponse)
-        .then(handlePackageQuickPick)
+        .then(showPackageQuickPick)
+        .then(fetchPackageVersions)
         .then(handleVersionsResponse)
+        .then(showVersionsQuickPick)
         .then(handleVersionsQuickPick.bind(null, csprojFullPath))
-        .then(writeFile.bind(null, csprojFullPath))
+        .then(writeFile)
         .then(showInformationMessage)
         .then(undefined, (err) => {
             clearStatusBar();

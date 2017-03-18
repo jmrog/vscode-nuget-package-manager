@@ -1,68 +1,69 @@
-import * as assert from 'assert';
+import * as expect from 'expect';
 import * as fs from 'fs';
-import { createUpdatedProjectJson } from '../../src/utils';
+import * as path from 'path';
+import { createUpdatedProjectJson } from '../../src/actions/shared';
 
 const mockProjectName = 'MockProject';
 const mockProjectVersion = '1.0.0';
+const mockPath = path.join(__dirname, '..', 'mocks');
 
 /**
  * Helper method for common test functionality.
  * @param {Array<any>} packageRefSection
  */
 function checkPackageReference(packageRefSection: Array<any>, index = 0) {
-    assert.ok(packageRefSection, 'Created JSON has a PackageReference');
+    expect(packageRefSection).toExist('Created JSON has a PackageReference');
 
     const packageReference = packageRefSection[index];
 
-    assert.strictEqual(packageReference.$.Include, mockProjectName, 'Created JSON has right project name');
-    assert.strictEqual(packageReference.$.Version, mockProjectVersion, 'Created JSON has right project version');
+    expect(packageReference.$.Include).toBe(mockProjectName, 'Created JSON has right project name');
+    expect(packageReference.$.Version).toBe(mockProjectVersion, 'Created JSON has right project version');
 }
 
-// TODO: Create gulp task to move mocks to right directory before testing.
 export default function runCreateUpdatedProjectJsonTests() {
     // TODO: tests to insure that existing package references are updated rather than adding duplicates
-    suite('createUpdatedProjectJson Tests', function () {
-        test('Standard .csproj JSON', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/Standard.json', 'utf8'));
+    describe('createUpdatedProjectJson', function () {
+        it('should handle standard .csproj JSON', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/Standard.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference, 2);
         });
 
-        test('No PackageReference tags', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/NoPackageReferences.json', 'utf8'));
+        it('should handle .csproj files with no PackageReference tags', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/NoPackageReferences.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference);
         });
 
-        test('No ItemGroup tags', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/NoItemGroups.json', 'utf8'));
+        it('should handle .csproj files with no ItemGroup tags', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/NoItemGroups.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
 
-            assert.ok(itemGroups, 'Created JSON has an ItemGroup');
+            expect(itemGroups).toExist('Created JSON has an ItemGroup');
 
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference);
         });
 
-        test('No Project tag', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/NoProject.json', 'utf8'));
-            assert.throws(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion), 'Throws');
+        it('should throw for .csproj files lacking a Project tag', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/NoProject.json`, 'utf8'));
+            expect(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion)).toThrow();
         });
 
-        test('Empty file/`null` JSON', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/Empty.json', 'utf8'));
-            assert.throws(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion), 'Throws');
+        it('should throw for empty files/`null` JSON values', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/Empty.json`, 'utf8'));
+            expect(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion)).toThrow();
         });
 
-        test('Immutability (does not modify passed-in JSON)', function () {
-            const json = JSON.parse(fs.readFileSync(__dirname + '/../../../test/mocks/NoItemGroups.json', 'utf8'));
+        it('should not modify passed-in JSON', function () {
+            const json = JSON.parse(fs.readFileSync(`${mockPath}/NoItemGroups.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
 
-            assert.ok(itemGroups, 'Created JSON has an ItemGroup');
-            assert.ok(!json.Project.ItemGroup, 'Original JSON is not modified');
+            expect(itemGroups).toExist('Created JSON has an ItemGroup');
+            expect(json.Project.ItemGroup).toNotExist('Original JSON is not modified');
         });
     });
 }

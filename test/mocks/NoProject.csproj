@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-  <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\"/>
-  </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
-  <ItemGroup withAttribute="test"/>
-  <ItemGroup>Test</ItemGroup>
-  <ItemGroup/>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1-beta1"/>
-    <PackageReference Include="Microsoft.AspNet.Server.Kestrel" Version="1.0.0-rc1-final"/>
-  </ItemGroup>
+  <SomeTag>
+    <PropertyGroup>
+      <TargetFramework>netcoreapp1.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\"/>
+    </ItemGroup>
+    <ItemGroup>
+    </ItemGroup>
+    <ItemGroup withAttribute="test"/>
+    <ItemGroup>Test</ItemGroup>
+    <ItemGroup/>
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="10.0.1-beta1"/>
+      <PackageReference Include="Microsoft.AspNet.Server.Kestrel" Version="1.0.0-rc1-final"/>
+    </ItemGroup>
+  </SomeTag>

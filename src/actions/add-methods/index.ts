@@ -1,18 +1,22 @@
 'use strict';
-import handlePackageQuickPick from './handlePackageQuickPick';
-import handleSearchInput from './handleSearchInput';
+import fetchPackages from './fetchPackages';
+import fetchPackageVersions from './fetchPackageVersions';
 import handleSearchResponse from './handleSearchResponse';
 import handleVersionsQuickPick from './handleVersionsQuickPick';
 import handleVersionsResponse from './handleVersionsResponse';
+import showPackageQuickPick from './showPackageQuickPick';
 import showSearchBox from './showSearchBox';
+import showVersionsQuickPick from './showVersionsQuickPick';
 import writeFile from './writeFile';
 
 export {
-    handlePackageQuickPick,
-    handleSearchInput,
+    fetchPackages,
+    fetchPackageVersions,
     handleSearchResponse,
     handleVersionsQuickPick,
     handleVersionsResponse,
+    showPackageQuickPick,
     showSearchBox,
+    showVersionsQuickPick,
     writeFile
 };

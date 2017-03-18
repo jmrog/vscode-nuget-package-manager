@@ -50,11 +50,16 @@
         "xml2js": "0.4.17"
     },
     "devDependencies": {
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0",
-        "mocha": "^2.3.3",
+        "@types/expect": "^1.20.0",
+        "@types/mocha": "^2.2.32",
         "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
+        "expect": "^1.20.2",
+        "gulp": "^3.9.1",
+        "gulp-rename": "^1.2.2",
+        "gulp-xml2js": "^0.1.1",
+        "mocha": "^2.3.3",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0"
     },
     "bugs": {
         "url": "https://github.com/jmrog/vscode-nuget-package-manager/issues"

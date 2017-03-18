@@ -34,7 +34,7 @@ export default function readInstalledPackages(csprojFullPath: string): Promise<a
             
                 const installedPackages = packageRefSection.PackageReference.map((ref) => `${ref.$.Include} ${ref.$.Version}`);
 
-                return resolve({ installedPackages, packageRefSection, parsed });
+                return resolve({ csprojFullPath, installedPackages, packageRefSection, parsed });
             });
         });
     });

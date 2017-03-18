@@ -1,42 +1,57 @@
 'use strict';
 import * as fs from 'fs';
+import * as vscode from 'vscode';
 import { parseString } from 'xml2js';
 
-import { handleError, createUpdatedProjectJson } from '../../utils';
+import { handleError } from '../../utils';
+import { checkCsprojPath, showCsprojQuickPick, createUpdatedProjectJson } from '../shared';
+import { ADD } from '../../constants';
 
 function getErrorMessage(verb, csprojFullPath) {
     return `Could not ${verb} the file at ${csprojFullPath}. Please try again.`;
 }
 
+// TODO: Clean this up if possible.
 export default function handleVersionsQuickPick(csprojFullPath: string, { selectedVersion, selectedPackageName }: { selectedVersion: string, selectedPackageName: string }): Promise<any> {
     selectedVersion = selectedVersion.startsWith('Latest version') ? '*' : selectedVersion;
 
-    return new Promise((resolve, reject) => {
-        fs.readFile(csprojFullPath, 'utf8', (err, data) => {
-            if (err) {
-                return handleError(err, getErrorMessage('read', csprojFullPath), reject);
+    return checkCsprojPath(vscode.workspace.rootPath)
+        .then((result): string | Thenable<string> => {
+            if (result.length === 1) {
+                return result[0];
             }
 
-            parseString(data, (err, parsed: any = {}) => {
-                if (err) {
-                    return handleError(err, getErrorMessage('parse', csprojFullPath), reject);
-                }
+            return showCsprojQuickPick(result, csprojFullPath, ADD);
+        })
+        .then((pickedCsproj) => {
+            return new Promise((resolve, reject) => {
+                fs.readFile(pickedCsproj, 'utf8', (err, data) => {
+                    if (err) {
+                        return handleError(err, getErrorMessage('read', pickedCsproj), reject);
+                    }
 
-                let contents;
+                    parseString(data, (err, parsed: any = {}) => {
+                        if (err) {
+                            return handleError(err, getErrorMessage('parse', pickedCsproj), reject);
+                        }
 
-                try {
-                    contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
-                }
-                catch (ex) {
-                    return handleError(ex, getErrorMessage('parse', csprojFullPath), reject);
-                }
+                        let contents;
 
-                resolve({
-                    contents,
-                    selectedPackageName,
-                    selectedVersion
+                        try {
+                            contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
+                        }
+                        catch (ex) {
+                            return handleError(ex, getErrorMessage('parse', pickedCsproj), reject);
+                        }
+
+                        return resolve({
+                            pickedCsproj,
+                            contents,
+                            selectedPackageName,
+                            selectedVersion
+                        });
+                    });
                 });
             });
         });
-    });
 }

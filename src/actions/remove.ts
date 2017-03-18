@@ -2,8 +2,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-import { showErrorMessage, showInformationMessage } from '../utils';
-import { emptyString, CANCEL } from '../constants';
+import { showErrorMessage, showInformationMessage, checkCsprojPath, showCsprojQuickPick } from './shared';
+import { emptyString, CANCEL, REMOVE } from '../constants';
 
 import {
     readInstalledPackages,
@@ -22,9 +22,17 @@ export function removeNuGetPackage() {
         csprojFullPath = path.join(rootPath, `${projectName}.csproj`);
     }
 
-    readInstalledPackages(csprojFullPath)
+    checkCsprojPath(vscode.workspace.rootPath)
+        .then((result: Array<string>): string | Thenable<string> => {
+            if (result.length === 1) {
+                return result[0];
+            }
+
+            return showCsprojQuickPick(result, csprojFullPath, REMOVE);
+        })
+        .then(readInstalledPackages)
         .then(showPackagesQuickPick)
-        .then(deletePackageReference.bind(null, csprojFullPath))
+        .then(deletePackageReference)
         .then(showInformationMessage)
         .then(undefined, (err) => {
             if (err !== CANCEL) {
