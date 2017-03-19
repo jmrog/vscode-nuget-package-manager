@@ -30,11 +30,15 @@ comments from the `.csproj` file. Unfortunately, there is no way around this
 at the moment, but the eventual plan is to replace this dependency.
 - This extension only works with `.csproj` files for now; it may also
 support (deprecated) `project.json` files in the future.
-- The extension assumes that your project's `.csproj` file has the same
-name as the directory name in which your project resides.
 - The extension does not add DotNetCliToolsReference entries for tools.
 
 ## Release Notes
+
+### 1.0.0
+- Refactored to now handle workspaces containing multiple `.csproj` files 
+(closes #10, closes #12)
+- Adds a number of tests and automated steps to build/test process (closes #7,
+closes #1)
 
 ### 0.1.1
 - Update preview images (and show both add and remove; closes #11)
