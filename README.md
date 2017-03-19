@@ -10,16 +10,17 @@ using Code's Command Palette.
 or full) package name or another search term.
 - Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` file
 from Visual Studio Code's Command Palette.
-- Handles workspaces with multiple `.csproj` files as well as workspaces with
-single `.csproj` files.
 - Remove installed packages from your project's `.csproj` file via Visual
 Studio Code's Command Palette.
+- Handles workspaces with multiple `.csproj` files as well as workspaces with
+single `.csproj` files.
 
 *Adding a Package:*
 
 ![Adding a Package](https://github.com/jmrog/vscode-nuget-package-manager/raw/master/images/add-package.gif)
 
 *Removing a Package:*
+
 ![Removing a Package](https://github.com/jmrog/vscode-nuget-package-manager/raw/master/images/remove-package.gif)
 
 ## Known Issues
