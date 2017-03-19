@@ -12,7 +12,7 @@ function getErrorMessage(verb, csprojFullPath) {
 }
 
 // TODO: Clean this up if possible.
-export default function handleVersionsQuickPick(csprojFullPath: string, { selectedVersion, selectedPackageName }: { selectedVersion: string, selectedPackageName: string }): Promise<any> {
+export default function handleVersionsQuickPick({ selectedVersion, selectedPackageName }: { selectedVersion: string, selectedPackageName: string }): Promise<any> | Promise<never> {
     selectedVersion = selectedVersion.startsWith('Latest version') ? '*' : selectedVersion;
 
     return checkCsprojPath(vscode.workspace.rootPath)
@@ -21,7 +21,7 @@ export default function handleVersionsQuickPick(csprojFullPath: string, { select
                 return result[0];
             }
 
-            return showCsprojQuickPick(result, csprojFullPath, ADD);
+            return showCsprojQuickPick(result, ADD);
         })
         .then((pickedCsproj) => {
             return new Promise((resolve, reject) => {
@@ -35,10 +35,8 @@ export default function handleVersionsQuickPick(csprojFullPath: string, { select
                             return handleError(err, getErrorMessage('parse', pickedCsproj), reject);
                         }
 
-                        let contents;
-
                         try {
-                            contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
+                            var contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
                         }
                         catch (ex) {
                             return handleError(ex, getErrorMessage('parse', pickedCsproj), reject);

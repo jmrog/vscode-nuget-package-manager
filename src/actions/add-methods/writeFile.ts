@@ -8,12 +8,10 @@ import { handleError } from '../../utils';
 const xmlBuilder = new XMLBuilder();
 const writeErrorMessage = 'Failed to write an updated .csproj file. Please try again later.';
 
-export default function writeFile({ pickedCsproj, contents, selectedPackageName, selectedVersion }): Promise<string> {
+export default function writeFile({ pickedCsproj, contents, selectedPackageName, selectedVersion }): Promise<string | never> {
     return new Promise((resolve, reject) => {
-        let xml;
-
         try {
-            xml = xmlBuilder.buildObject(contents);
+            var xml = xmlBuilder.buildObject(contents);
         }
         catch (ex) {
             return handleError(ex, writeErrorMessage, reject);

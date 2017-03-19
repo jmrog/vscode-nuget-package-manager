@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 
 import { NUGET_SEARCH_URL, CANCEL } from '../../constants';
 
-export default function fetchPackages(input: string, searchUrl: string = NUGET_SEARCH_URL): Promise<Response | never> {
+export default function fetchPackages(input: string, searchUrl: string = NUGET_SEARCH_URL): Promise<Response> | Promise<never> {
     if (!input) {
         // Search canceled.
         return Promise.reject(CANCEL);

@@ -5,14 +5,14 @@ import { flattenNestedArray, handleError } from '../../utils';
 
 const csprojMatcher = /\.csproj$/;
 
-export default function getCsprojRecursive(startPath: string): Promise<Array<string>> {
+export default function getCsprojRecursive(startPath: string): Promise<Array<string> | never> {
     return new Promise((resolve, reject) => {
         fs.readdir(startPath, (err, files) => {
             if (err) {
                 return handleError(err, err.message, reject);
             }
 
-            const promises = files.map((fileName) => new Promise((resolve, reject) => {
+            const promises = files.map((fileName) => new Promise((resolve: (value: Array<string>) => any, reject) => {
                 const filePath = path.resolve(startPath, fileName);
 
                 fs.stat(filePath, (err, stats) => {

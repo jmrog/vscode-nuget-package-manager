@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 import { clearStatusBar } from '../shared';
 import { NUGET_VERSIONS_URL, CANCEL } from '../../constants';
 
-export default function fetchPackageVersions(selectedPackageName: string, versionsUrl: string = NUGET_VERSIONS_URL): Promise<any> {
+export default function fetchPackageVersions(selectedPackageName: string, versionsUrl: string = NUGET_VERSIONS_URL): Promise<any> | Promise<never> {
     if (!selectedPackageName) {
         // User has canceled the process.
         return Promise.reject(CANCEL);

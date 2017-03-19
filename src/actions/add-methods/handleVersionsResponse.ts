@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { CANCEL } from '../../constants';
 import { handleError } from '../../utils';
 
-export default function handleVersionsResponse({ response, selectedPackageName }: { response: Response, selectedPackageName: string }): Promise<any> {
+export default function handleVersionsResponse({ response, selectedPackageName }: { response: Response, selectedPackageName: string }): Promise<any> | Promise<never> {
     if (!response.ok) {
         return handleError<Promise<never>>(
             null,

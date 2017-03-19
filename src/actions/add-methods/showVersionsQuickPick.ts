@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { CANCEL } from '../../constants';
 import { handleError } from '../../utils';
 
-export default function showVersionsQuickPick({ json, selectedPackageName }: { json: any, selectedPackageName: string }): Promise<any> {
+export default function showVersionsQuickPick({ json, selectedPackageName }: { json: any, selectedPackageName: string }): Promise<any | never> {
     // TODO: This could probably use more error handling.
     const versions = json.versions.slice().reverse().concat('Latest version (Wildcard *)');
 

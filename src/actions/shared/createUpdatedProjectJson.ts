@@ -11,7 +11,7 @@ import { isPlainObject } from '../../utils';
  * @param {string} selectedPackageName - name of package being added
  * @param {string} selectedVersion - version string for package being added
  */
-export default function createUpdatedProjectJson(parsedProjectFile: any = {}, selectedPackageName: string, selectedVersion: string) {
+export default function createUpdatedProjectJson(parsedProjectFile: any = {}, selectedPackageName: string, selectedVersion: string): any {
     if (!isPlainObject(parsedProjectFile.Project)) {
         // We don't try to create this, as its absence suggests something is terribly wrong.
         throw new TypeError('Cannot locate the project root in your project file. Please fix this issue and try again.');
