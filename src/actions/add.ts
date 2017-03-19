@@ -1,37 +1,30 @@
-'use strict';
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-import { showInformationMessage, showErrorMessage, clearStatusBar } from '../utils/';
 import { emptyString, CANCEL } from '../constants';
+import { showInformationMessage, showErrorMessage, clearStatusBar } from './shared/';
 import {
     showSearchBox,
-    handleSearchInput,
+    fetchPackages,
     handleSearchResponse,
-    handlePackageQuickPick,
+    showPackageQuickPick,
+    fetchPackageVersions,
     handleVersionsResponse,
+    showVersionsQuickPick,
     handleVersionsQuickPick,
     writeFile
 } from './add-methods';
 
-// TODO: Support project.json as well as .csproj
-let projectName = emptyString
-let csprojFullPath = emptyString;
-
 export function addNuGetPackage() {
-    if (!projectName || !csprojFullPath) {
-        const { rootPath } = vscode.workspace;
-        projectName = path.basename(rootPath);
-        csprojFullPath = path.join(rootPath, `${projectName}.csproj`);
-    }
-
     showSearchBox()
-        .then(handleSearchInput)
+        .then(fetchPackages)
         .then(handleSearchResponse)
-        .then(handlePackageQuickPick)
+        .then(showPackageQuickPick)
+        .then(fetchPackageVersions)
         .then(handleVersionsResponse)
-        .then(handleVersionsQuickPick.bind(null, csprojFullPath))
-        .then(writeFile.bind(null, csprojFullPath))
+        .then(showVersionsQuickPick)
+        .then(handleVersionsQuickPick)
+        .then(writeFile)
         .then(showInformationMessage)
         .then(undefined, (err) => {
             clearStatusBar();

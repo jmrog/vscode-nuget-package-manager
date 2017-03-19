@@ -1,6 +1,7 @@
 out
 node_modules
 .vscode/
+.vscode-test/
 vsc-extension-quickstart.md
 .DS_Store
 

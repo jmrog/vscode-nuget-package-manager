@@ -1,4 +1,3 @@
-'use strict';
 import * as fs from 'fs';
 import { Builder as XMLBuilder } from 'xml2js';
 
@@ -8,7 +7,7 @@ import { CANCEL } from '../../constants';
 const xmlBuilder = new XMLBuilder();
 const writeErrorMessage = 'Failed to write an updated .csproj file. Please try again later.';
 
-export default function deletePackageReference(csprojFullPath, { selectedPackage, parsed, packageRefSection }: { selectedPackage: string | undefined, parsed: any, packageRefSection: any }): Promise<string> {
+export default function deletePackageReference({ csprojFullPath, selectedPackage, parsed, packageRefSection }: any): Promise<string> | Promise<never> {
     if (!selectedPackage) {
         // Search canceled.
         return Promise.reject(CANCEL);
