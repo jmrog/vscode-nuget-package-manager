@@ -1,11 +1,11 @@
 import * as expect from 'expect';
 import * as fs from 'fs';
 import * as path from 'path';
-import { createUpdatedProjectJson } from '../../src/actions/shared';
+import { createUpdatedProjectJson } from '../../../src/actions/shared';
 
 const mockProjectName = 'MockProject';
 const mockProjectVersion = '1.0.0';
-const mockPath = path.join(__dirname, '..', 'mocks');
+const mockPath = path.join(__dirname, '..', '..', 'mocks');
 
 /**
  * Helper method for common test functionality.

@@ -1,5 +1,8 @@
-import runCreateUpdatedProjectJsonTests from './utils/createUpdatedProjectJson.test';
 import runFlattenNestedArrayTests from './utils/flattenNestedArray.test';
 
-runCreateUpdatedProjectJsonTests();
+import runCreateUpdatedProjectJsonTests from './actions/shared/createUpdatedProjectJson.test';
+import runHandleSearchResponseTests from './actions/add-methods/handleSearchResponse.test';
+
 runFlattenNestedArrayTests();
+runCreateUpdatedProjectJsonTests();
+runHandleSearchResponseTests();
