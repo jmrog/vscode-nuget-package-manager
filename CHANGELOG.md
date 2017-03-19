@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.0.1, 1.0.2] - 2017-03-19
+- Changes to README to remove leftover stuff (whoops)
+
 ## [1.0.0] - 2017-03-19
 - Refactored to now handle workspaces containing multiple `.csproj` files 
 (closes #10, closes #12)

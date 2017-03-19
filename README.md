@@ -34,6 +34,9 @@ support (deprecated) `project.json` files in the future.
 
 ## Release Notes
 
+### 1.0.1, 1.0.2
+- Changes to README to remove leftover stuff (whoops)
+
 ### 1.0.0
 - Refactored to now handle workspaces containing multiple `.csproj` files 
 (closes #10, closes #12)
