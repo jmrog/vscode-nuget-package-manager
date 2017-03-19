@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Writes an error to the console but rejects with a nicer error message for the user.
  * 

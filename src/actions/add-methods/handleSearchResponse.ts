@@ -1,4 +1,3 @@
-'use strict';
 import * as vscode from 'vscode';
 
 export default function handleSearchResponse(response: Response): Promise<any> | Promise<never> {

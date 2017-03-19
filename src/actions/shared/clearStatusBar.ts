@@ -1,4 +1,3 @@
-'use strict';
 import * as vscode from 'vscode';
 
 export default function clearStatusBar(): void {

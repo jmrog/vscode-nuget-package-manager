@@ -1,4 +1,3 @@
-'use strict';
 import fetchPackages from './fetchPackages';
 import fetchPackageVersions from './fetchPackageVersions';
 import handleSearchResponse from './handleSearchResponse';

@@ -1,4 +1,3 @@
-'use strict';
 import { isPlainObject } from '../../utils';
 
 /**

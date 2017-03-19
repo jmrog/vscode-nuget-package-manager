@@ -1,4 +1,3 @@
-'use strict';
 import * as fs from 'fs';
 import { Builder as XMLBuilder } from 'xml2js';
 

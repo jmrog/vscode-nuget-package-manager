@@ -1,4 +1,3 @@
-'use strict';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { parseString } from 'xml2js';
