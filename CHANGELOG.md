@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.1.1] - 2017-04-01
+- Fix bug with file search traversing deeply through node_modules (if present)
+
 ## [1.1.0] - 2017-04-01
 - Add F#/.fsproj support
 

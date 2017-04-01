@@ -32,6 +32,9 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
+### 1.1.1
+- Fix bug with file search traversing deeply through node_modules (if present)
+
 ### 1.1.0
 - Add F#/.fsproj support
 
