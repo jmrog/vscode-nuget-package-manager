@@ -2,9 +2,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { flattenNestedArray, handleError } from '../../utils';
 
-const csprojMatcher = /\.csproj$/;
+const projFileMatcher = /\.[cf]sproj$/;
 
-export default function getCsprojRecursive(startPath: string): Promise<Array<string> | never> {
+export default function getProjFileRecursive(startPath: string): Promise<Array<string> | never> {
     return new Promise((resolve, reject) => {
         fs.readdir(startPath, (err, files) => {
             if (err) {
@@ -20,12 +20,12 @@ export default function getCsprojRecursive(startPath: string): Promise<Array<str
                     }
                     
                     if (stats) {
-                        if (stats.isFile() && csprojMatcher.test(filePath)) {
+                        if (stats.isFile() && projFileMatcher.test(filePath)) {
                             return resolve([filePath]);
                         }
 
                         if (stats.isDirectory()) {
-                            return getCsprojRecursive(filePath).then(resolve);
+                            return getProjFileRecursive(filePath).then(resolve);
                         }
                     }
 

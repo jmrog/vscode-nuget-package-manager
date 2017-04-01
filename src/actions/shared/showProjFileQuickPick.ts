@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { truncateCsprojPath } from './';
+import { truncateProjFilePath } from './';
 import { CANCEL, REMOVE, ADD } from '../../constants';
 
 /**
@@ -11,14 +11,14 @@ import { CANCEL, REMOVE, ADD } from '../../constants';
  */
 function getPlaceholder(action: string): string {
     const preposition = action === REMOVE ? 'From' : 'To';
-    return `${preposition} which .csproj file do you wish to ${action.toLowerCase()} this dependency?`;
+    return `${preposition} which project file do you wish to ${action.toLowerCase()} this dependency?`;
 }
 
-export default function showCsprojQuickPick(foundCsproj: Array<string>, action: string): Thenable<string> | Thenable<never> {
-    // Truncate `.csproj` file paths for readability, mapping the truncated string to the full path
+export default function showProjFileQuickPick(foundProjFiles: Array<string>, action: string): Thenable<string> | Thenable<never> {
+    // Truncate `.[fc]sproj` file paths for readability, mapping the truncated string to the full path
     // for easy retrieval once a truncated path is picked by the user.
-    const truncatedPathMap = foundCsproj.reduce((newMap, csprojPath) => {
-        newMap[truncateCsprojPath(csprojPath)] = csprojPath;
+    const truncatedPathMap = foundProjFiles.reduce((newMap, projFilePath) => {
+        newMap[truncateProjFilePath(projFilePath)] = projFilePath;
         return newMap;
     }, {});
 

@@ -1,19 +1,19 @@
 # vscode-nuget-package-manager
 
 An extension for Visual Studio Code that lets you easily add or remove 
-.NET Core 1.1+ package references to/from your project's `.csproj` file
-using Code's Command Palette.
+.NET Core 1.1+ package references to/from your project's `.csproj` or `.fsproj`
+file using Code's Command Palette.
 
 ## Features
 
 - Search the NuGet package repository for packages using either (partial
 or full) package name or another search term.
-- Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` file
-from Visual Studio Code's Command Palette.
-- Remove installed packages from your project's `.csproj` file via Visual
-Studio Code's Command Palette.
-- Handles workspaces with multiple `.csproj` files as well as workspaces with
-single `.csproj` files.
+- Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` or
+`.fsproj` file from Visual Studio Code's Command Palette.
+- Remove installed packages from your project's `.csproj` or `.fsproj` file via
+Visual Studio Code's Command Palette.
+- Handles workspaces with multiple `.csproj` or `.fsproj` files as well as
+workspaces with single `.csproj`/`.fsproj` files.
 
 *Adding a Package:*
 
@@ -26,13 +26,14 @@ single `.csproj` files.
 ## Known Issues
 
 - The XML-to-JavaScript parser that this extension uses currently strips out
-comments from the `.csproj` file. Unfortunately, there is no way around this
+comments from the project file. Unfortunately, there is no way around this
 at the moment, but the eventual plan is to replace this dependency.
-- This extension only works with `.csproj` files for now; it may also
-support (deprecated) `project.json` files in the future.
 - The extension does not add DotNetCliToolsReference entries for tools.
 
 ## Release Notes
+
+### 1.1.0
+- Add F#/.fsproj support
 
 ### 1.0.1, 1.0.2
 - Changes to README to remove leftover stuff (whoops)

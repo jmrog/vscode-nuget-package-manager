@@ -1,13 +1,18 @@
 import * as fs from 'fs';
 import { Builder as XMLBuilder } from 'xml2js';
 
-import { handleError } from '../../utils';
+import { handleError, getProjFileExtension } from '../../utils';
 import { CANCEL } from '../../constants';
 
 const xmlBuilder = new XMLBuilder();
-const writeErrorMessage = 'Failed to write an updated .csproj file. Please try again later.';
 
-export default function deletePackageReference({ csprojFullPath, selectedPackage, parsed, packageRefSection }: any): Promise<string> | Promise<never> {
+const getErrorMessage = (projFileFullPath: string): string => {
+    const extension = getProjFileExtension(projFileFullPath);
+    const fileDescription = extension ? `.${extension}` : 'project';
+    return `Failed to write an updated ${fileDescription} file. Please try again later.`;
+}
+
+export default function deletePackageReference({ projFileFullPath, selectedPackage, parsed, packageRefSection }: any): Promise<string> | Promise<never> {
     if (!selectedPackage) {
         // Search canceled.
         return Promise.reject(CANCEL);
@@ -34,15 +39,15 @@ export default function deletePackageReference({ csprojFullPath, selectedPackage
             xml = xmlBuilder.buildObject(parsed);
         }
         catch (ex) {
-            return handleError(ex, writeErrorMessage, reject);
+            return handleError(ex, getErrorMessage(projFileFullPath), reject);
         }
 
-        fs.writeFile(csprojFullPath, xml, (err) => {
+        fs.writeFile(projFileFullPath, xml, (err) => {
             if (err) {
-                return handleError(err, writeErrorMessage, reject);
+                return handleError(err, getErrorMessage(projFileFullPath), reject);
             }
 
-            return resolve(`Success! Removed ${selectedPackageName}@${selectedPackageVersion} from ${csprojFullPath}. Run dotnet restore to update your project.`);
+            return resolve(`Success! Removed ${selectedPackageName}@${selectedPackageVersion} from ${projFileFullPath}. Run dotnet restore to update your project.`);
         });
     });
 }
