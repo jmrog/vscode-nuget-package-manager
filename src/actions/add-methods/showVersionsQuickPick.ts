@@ -12,7 +12,7 @@ export default function showVersionsQuickPick({ json, selectedPackageName }: { j
             placeHolder: 'Select the version to add.'
         }).then((selectedVersion: string | undefined) => {
             if (!selectedVersion) {
-                // User canceled or failed to select a version. TODO: Enter maybe should select first version.
+                // User canceled.
                 return reject(CANCEL);
             }
             resolve({ selectedVersion, selectedPackageName });

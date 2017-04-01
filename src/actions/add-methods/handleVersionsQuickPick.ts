@@ -34,8 +34,10 @@ export default function handleVersionsQuickPick({ selectedVersion, selectedPacka
                             return handleError(err, getErrorMessage('parse', pickedProjFile), reject);
                         }
 
+                        let contents;
+
                         try {
-                            var contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
+                            contents = createUpdatedProjectJson(parsed, selectedPackageName, selectedVersion);
                         }
                         catch (ex) {
                             return handleError(ex, getErrorMessage('parse', pickedProjFile), reject);
