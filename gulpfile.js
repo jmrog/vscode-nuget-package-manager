@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const gxml = require('gulp-xml2js');
 const rename = require('gulp-rename');
 
-const csprojMatcher = /\.csproj$/;
+const projFileMatcher = /\.[fc]sproj$/;
 const mockPath = 'test/mocks';
 
 gulp.task('generate-json', (callback) => {
@@ -13,7 +13,7 @@ gulp.task('generate-json', (callback) => {
         let numFilesPiped = 0;
 
         files.forEach((file) => {
-            if (csprojMatcher.test(file)) {
+            if (projFileMatcher.test(file)) {
                 gulp.src(path.resolve(mockPath, file))
                     .pipe(gxml())
                     .pipe(rename((path) => path.extname = '.json'))

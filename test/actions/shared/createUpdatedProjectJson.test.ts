@@ -23,21 +23,21 @@ function checkPackageReference(packageRefSection: Array<any>, index = 0) {
 export default function runCreateUpdatedProjectJsonTests() {
     // TODO: tests to insure that existing package references are updated rather than adding duplicates
     describe('createUpdatedProjectJson', function () {
-        it('should handle standard .csproj JSON', function () {
+        it('should handle standard .csproj/.fsproj JSON', function () {
             const json = JSON.parse(fs.readFileSync(`${mockPath}/Standard.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference, 2);
         });
 
-        it('should handle .csproj files with no PackageReference tags', function () {
+        it('should handle .csproj/.fsproj files with no PackageReference tags', function () {
             const json = JSON.parse(fs.readFileSync(`${mockPath}/NoPackageReferences.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference);
         });
 
-        it('should handle .csproj files with no ItemGroup tags', function () {
+        it('should handle .csproj/.fsproj files with no ItemGroup tags', function () {
             const json = JSON.parse(fs.readFileSync(`${mockPath}/NoItemGroups.json`, 'utf8'));
             const result = createUpdatedProjectJson(json, mockProjectName, mockProjectVersion);
             const itemGroups = result.Project.ItemGroup;
@@ -47,7 +47,7 @@ export default function runCreateUpdatedProjectJsonTests() {
             checkPackageReference(itemGroups[itemGroups.length - 1].PackageReference);
         });
 
-        it('should throw for .csproj files lacking a Project tag', function () {
+        it('should throw for .csproj/.fsproj files lacking a Project tag', function () {
             const json = JSON.parse(fs.readFileSync(`${mockPath}/NoProject.json`, 'utf8'));
             expect(() => createUpdatedProjectJson(json, mockProjectName, mockProjectVersion)).toThrow();
         });
