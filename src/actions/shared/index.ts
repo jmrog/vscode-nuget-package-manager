@@ -1,21 +1,21 @@
 import * as vscode from 'vscode';
-import checkCsprojPath from './checkCsprojPath';
-import showCsprojQuickPick from './showCsprojQuickPick';
+import checkProjFilePath from './checkProjFilePath';
+import showProjFileQuickPick from './showProjFileQuickPick';
 import clearStatusBar from './clearStatusBar';
 import createUpdatedProjectJson from './createUpdatedProjectJson';
-import getCsprojRecursive from './getCsprojRecursive';
-import truncateCsprojPath from './truncateCsprojPath';
+import getProjFileRecursive from './getProjFileRecursive';
+import truncateProjFilePath from './truncateProjFilePath';
 
 const showInformationMessage = vscode.window.showInformationMessage.bind(vscode.window);
 const showErrorMessage = vscode.window.showErrorMessage.bind(vscode.window);
 
 export {
-    checkCsprojPath,
-    showCsprojQuickPick,
+    checkProjFilePath,
+    showProjFileQuickPick,
     clearStatusBar,
     showInformationMessage,
     showErrorMessage,
     createUpdatedProjectJson,
-    getCsprojRecursive,
-    truncateCsprojPath
+    getProjFileRecursive,
+    truncateProjFilePath
 };
