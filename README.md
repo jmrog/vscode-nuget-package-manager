@@ -2,15 +2,15 @@
 
 An extension for Visual Studio Code that lets you easily add or remove 
 .NET Core 1.1+ package references to/from your project's `.csproj` or `.fsproj`
-file using Code's Command Palette.
+files using Code's Command Palette.
 
 ## Features
 
 - Search the NuGet package repository for packages using either (partial
 or full) package name or another search term.
 - Add PackageReference dependencies to your .NET Core 1.1+ `.csproj` or
-`.fsproj` file from Visual Studio Code's Command Palette.
-- Remove installed packages from your project's `.csproj` or `.fsproj` file via
+`.fsproj` files from Visual Studio Code's Command Palette.
+- Remove installed packages from your project's `.csproj` or `.fsproj` files via
 Visual Studio Code's Command Palette.
 - Handles workspaces with multiple `.csproj` or `.fsproj` files as well as
 workspaces with single `.csproj`/`.fsproj` files.

@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { flattenNestedArray, handleError } from '../../utils';
-
-const projFileMatcher = /\.[cf]sproj$/;
+import { projFileExtensionMatcher } from '../../constants';
 
 export default function getProjFileRecursive(startPath: string): Promise<Array<string> | never> {
     return new Promise((resolve, reject) => {
@@ -20,7 +19,7 @@ export default function getProjFileRecursive(startPath: string): Promise<Array<s
                     }
                     
                     if (stats) {
-                        if (stats.isFile() && projFileMatcher.test(filePath)) {
+                        if (stats.isFile() && projFileExtensionMatcher.test(filePath)) {
                             return resolve([filePath]);
                         }
 
