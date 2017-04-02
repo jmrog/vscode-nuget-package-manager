@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.1.2] - 2017-04-01
+- Handle case where XML parser passes null to callback (closes #16)
+
 ## [1.1.1] - 2017-04-01
 - Fix bug with file search traversing deeply through node_modules (if present)
 

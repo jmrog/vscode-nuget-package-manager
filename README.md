@@ -32,6 +32,9 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
+### 1.1.2
+- Handle case where XML parser passes null to callback (closes #16)
+
 ### 1.1.1
 - Fix bug with file search traversing deeply through node_modules (if present)
 
