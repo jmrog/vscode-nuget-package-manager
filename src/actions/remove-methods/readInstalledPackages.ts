@@ -24,7 +24,7 @@ export default function readInstalledPackages(projFileFullPath: string): Promise
             }
 
             parseString(data, (err, parsed: any = {}) => {
-                if (err) {
+                if (err || !parsed) {
                     return handleError(
                         err,
                         getConstructedErrorMessage(
