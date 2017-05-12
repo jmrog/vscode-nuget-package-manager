@@ -2,10 +2,12 @@ import handleError from './handleError';
 import isPlainObject from './isPlainObject';
 import flattenNestedArray from './flattenNestedArray';
 import getProjFileExtension from './getProjFileExtension';
+import getFetchOptions from './getFetchOptions';
 
 export {
     handleError,
     isPlainObject,
     flattenNestedArray,
-    getProjFileExtension
+    getProjFileExtension,
+    getFetchOptions
 };

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-import { showErrorMessage, showInformationMessage, checkProjFilePath, showProjFileQuickPick } from './shared';
+import { showInformationMessage, checkProjFilePath, showProjFileQuickPick } from './shared';
 import { emptyString, CANCEL, REMOVE } from '../constants';
 
 import {
@@ -25,7 +25,7 @@ export function removeNuGetPackage() {
         .then(showInformationMessage)
         .then(undefined, (err) => {
             if (err !== CANCEL) {
-                showErrorMessage(err);
+                vscode.window.showErrorMessage(err.message || err || 'Something went wrong! Please try again.');
             }
         });
 }
