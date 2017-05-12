@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 
 import { emptyString, CANCEL } from '../constants';
-import { showInformationMessage, showErrorMessage, clearStatusBar } from './shared/';
+import { showInformationMessage, clearStatusBar } from './shared/';
 import {
     showSearchBox,
     fetchPackages,
@@ -29,7 +29,7 @@ export function addNuGetPackage() {
         .then(undefined, (err) => {
             clearStatusBar();
             if (err !== CANCEL) {
-                showErrorMessage(err);
+                vscode.window.showErrorMessage(err.message || err || 'Something went wrong! Please try again.');
             }
         });
 }
