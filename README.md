@@ -32,6 +32,9 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
+### 1.1.3
+- Support for http proxy settings (closes #18)
+
 ### 1.1.2
 - Handle case where XML parser passes null to callback (closes #16)
 
