@@ -1,3 +1,4 @@
+import * as url from 'url';
 import * as HttpsProxyAgent from 'https-proxy-agent';
 
 import { RESPONSE_TIMEOUT } from '../constants';
@@ -5,6 +6,7 @@ import { RESPONSE_TIMEOUT } from '../constants';
 // Cache a few things since this stuff will rarely change, and there's no need to recreate an agent
 // if no change has occurred, etc.
 let lastProxy = '';
+let lastProxyStrictSSL: boolean;
 let lastHttpsProxyAgent: any;
 
 interface ProxyConfiguration {
@@ -14,7 +16,7 @@ interface ProxyConfiguration {
 }
 
 export default function getFetchOptions(configuration?: ProxyConfiguration) {
-    const { proxy, proxyAuthorization } = configuration || {} as ProxyConfiguration;
+    const { proxy, proxyAuthorization, proxyStrictSSL } = configuration || {} as ProxyConfiguration;
     const fetchOptions: any = { timeout: RESPONSE_TIMEOUT };
 
     if (!proxy) {
@@ -22,12 +24,17 @@ export default function getFetchOptions(configuration?: ProxyConfiguration) {
         return fetchOptions; // no proxy, so ignore everything but timeout
     }
 
-    if (proxy === lastProxy) {
+    if (proxy === lastProxy && proxyStrictSSL === lastProxyStrictSSL) {
         fetchOptions.agent = lastHttpsProxyAgent;
     }
     else {
-        fetchOptions.agent = new HttpsProxyAgent(proxy);
+        const parsedProxy = url.parse(proxy);
+        fetchOptions.agent = new HttpsProxyAgent({
+            ...parsedProxy,
+            secureEndpoint: !!proxyStrictSSL // coerce to boolean just in case
+        });
         lastHttpsProxyAgent = fetchOptions.agent;
+        lastProxyStrictSSL = proxyStrictSSL;
         lastProxy = proxy;
     }
 
