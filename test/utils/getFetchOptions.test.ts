@@ -45,7 +45,7 @@ export default function runGetFetchOptionsTests() {
             expect(getFetchOptions(config)).toNotBe(resultTwo);
         });
 
-        it('should re-use agents if the same proxy is set', function () {
+        it('should re-use agents if the same proxy and proxyStrictSSL values are set', function () {
             const config: any = {
                 proxy: 'http://lol.wut'
             };
@@ -56,7 +56,15 @@ export default function runGetFetchOptionsTests() {
                 proxy: 'http://lol.wut',
                 proxyAuthorization: 'Basic YA09AHLAKehtO9Het3' // this isn't real, so no need to freak out
             }).agent).toBe(agent);
-            expect(getFetchOptions({ proxy: 'http://something.else' }).agent).toNotBe(agent);
+            expect(getFetchOptions({ proxy: 'https://something.else' }).agent).toNotBe(agent);
+            expect(getFetchOptions({
+                proxy: 'http://lol.wut',
+                proxyStrictSSL: true
+            }).agent).toNotBe(agent);
+            expect(getFetchOptions({
+                proxy: 'http://lol.wut',
+                proxyStrictSSL: undefined
+            }).agent).toBe(getFetchOptions(config).agent);
         });
 
         // Ensure that cached values don't interfere with correct operation:
