@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.1.4] - 2017-06-24
+- Respect http.proxyStrictSSL setting
+
 ## [1.1.3] - 2017-05-11
 - Support for http proxy settings (closes #18)
 

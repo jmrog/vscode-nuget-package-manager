@@ -32,6 +32,9 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
+### 1.1.4
+- Respect http.proxyStrictSSL setting
+
 ### 1.1.3
 - Support for http proxy settings (closes #18)
 
