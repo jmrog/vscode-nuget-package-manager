@@ -2,10 +2,11 @@ import * as vscode from 'vscode';
 import * as qs from 'querystring';
 import fetch from 'node-fetch';
 
-import { NUGET_SEARCH_URL, CANCEL } from '../../constants';
+import { CANCEL } from '../../constants';
 import { getFetchOptions } from '../../utils';
+import { getNuGetSearchUrl } from './'
 
-export default function fetchPackages(input: string, searchUrl: string = NUGET_SEARCH_URL): Promise<Response> | Promise<never> {
+export default function fetchPackages(input: string): Promise<Response> | Promise<never> {
     if (!input) {
         // Search canceled.
         return Promise.reject(CANCEL);
@@ -19,5 +20,9 @@ export default function fetchPackages(input: string, searchUrl: string = NUGET_S
         take: '100'
     });
 
-    return fetch(`${searchUrl}?${queryParams}`, getFetchOptions(vscode.workspace.getConfiguration('http')));
+    return getNuGetSearchUrl()
+        .then((searchUrls) => {
+            const searchUrl = searchUrls[0];
+            return fetch(`${searchUrl}?${queryParams}`, getFetchOptions(vscode.workspace.getConfiguration('http')));
+        });
 }

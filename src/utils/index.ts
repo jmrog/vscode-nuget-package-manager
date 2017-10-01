@@ -4,6 +4,7 @@ import flattenNestedArray from './flattenNestedArray';
 import getProjFileExtension from './getProjFileExtension';
 import getFetchOptions from './getFetchOptions';
 import isHeadlessXML from './isHeadlessXML';
+import dedupeArray from './dedupeArray';
 
 export {
     handleError,
@@ -11,5 +12,6 @@ export {
     flattenNestedArray,
     getProjFileExtension,
     getFetchOptions,
-    isHeadlessXML
+    isHeadlessXML,
+    dedupeArray
 };
