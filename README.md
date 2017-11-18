@@ -32,6 +32,9 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
+## 1.1.5
+- Cross-platform team development aid: don't add or remove XML declarations to/from first line of project files (closes #29)
+
 ### 1.1.4
 - Respect http.proxyStrictSSL setting
 

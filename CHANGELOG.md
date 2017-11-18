@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.1.5] - 2017-11-17
+- Cross-platform team development aid: don't add or remove XML declarations to/from first line of project files (closes #29)
+
 ## [1.1.4] - 2017-06-24
 - Respect http.proxyStrictSSL setting
 
