@@ -1,10 +1,8 @@
 import * as fs from 'fs';
 import { Builder as XMLBuilder } from 'xml2js';
 
-import { handleError, getProjFileExtension } from '../../utils';
+import { handleError, getProjFileExtension, isHeadlessXML } from '../../utils';
 import { CANCEL } from '../../constants';
-
-const xmlBuilder = new XMLBuilder();
 
 const getErrorMessage = (projFileFullPath: string): string => {
     const extension = getProjFileExtension(projFileFullPath);
@@ -12,7 +10,13 @@ const getErrorMessage = (projFileFullPath: string): string => {
     return `Failed to write an updated ${fileDescription} file. Please try again later.`;
 }
 
-export default function deletePackageReference({ projFileFullPath, selectedPackage, parsed, packageRefSection }: any): Promise<string> | Promise<never> {
+export default function deletePackageReference({
+    projFileFullPath,
+    selectedPackage,
+    parsed,
+    packageRefSection,
+    originalContents = ''
+}: any): Promise<string> | Promise<never> {
     if (!selectedPackage) {
         // Search canceled.
         return Promise.reject(CANCEL);
@@ -33,6 +37,9 @@ export default function deletePackageReference({ projFileFullPath, selectedPacka
             itemGroup.splice(packageRefSectionIdx, 1);
         }
 
+        const xmlBuilder = new XMLBuilder({
+            headless: isHeadlessXML(originalContents)
+        });
         let xml;
 
         try {

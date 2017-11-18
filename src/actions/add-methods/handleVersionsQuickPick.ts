@@ -47,7 +47,8 @@ export default function handleVersionsQuickPick({ selectedVersion, selectedPacka
                             pickedProjFile,
                             contents,
                             selectedPackageName,
-                            selectedVersion
+                            selectedVersion,
+                            originalContents: data
                         });
                     });
                 });

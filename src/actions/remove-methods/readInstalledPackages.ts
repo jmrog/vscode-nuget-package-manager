@@ -45,7 +45,13 @@ export default function readInstalledPackages(projFileFullPath: string): Promise
             
                 const installedPackages = packageRefSection.PackageReference.map((ref) => `${ref.$.Include} ${ref.$.Version}`);
 
-                return resolve({ projFileFullPath, installedPackages, packageRefSection, parsed });
+                return resolve({
+                    projFileFullPath,
+                    installedPackages,
+                    packageRefSection,
+                    parsed,
+                    originalContents: data
+                });
             });
         });
     });
