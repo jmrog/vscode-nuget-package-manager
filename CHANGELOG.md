@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "vscode-nuget-package-manager" extension will be documented in this file.
 
+## [1.1.6] - 2017-11-18
+- Allow self-signed certificates for requests when http.proxyStrictSSL is false (closes #24)
+
 ## [1.1.5] - 2017-11-17
 - Cross-platform team development aid: don't add or remove XML declarations to/from first line of project files (closes #29)
 
