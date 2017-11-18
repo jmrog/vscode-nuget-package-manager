@@ -29,10 +29,14 @@ export default function getFetchOptions(configuration?: ProxyConfiguration) {
     }
     else {
         const parsedProxy = url.parse(proxy);
+        const useStrictSSL = !!proxyStrictSSL; // coerce to boolean just in case
+
         fetchOptions.agent = new HttpsProxyAgent({
             ...parsedProxy,
-            secureEndpoint: !!proxyStrictSSL // coerce to boolean just in case
+            secureEndpoint: useStrictSSL,
+            rejectUnauthorized: useStrictSSL
         });
+
         lastHttpsProxyAgent = fetchOptions.agent;
         lastProxyStrictSSL = proxyStrictSSL;
         lastProxy = proxy;
