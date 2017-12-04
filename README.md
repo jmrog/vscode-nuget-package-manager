@@ -32,10 +32,10 @@ at the moment, but the eventual plan is to replace this dependency.
 
 ## Release Notes
 
-## 1.1.6
+### 1.1.6
 - Allow self-signed certificates for requests when http.proxyStrictSSL is false (closes #24)
 
-## 1.1.5
+### 1.1.5
 - Cross-platform team development aid: don't add or remove XML declarations to/from first line of project files (closes #29)
 
 ### 1.1.4
