@@ -24,7 +24,7 @@ export default function showProjFileQuickPick(foundProjFiles: Array<string>, act
 
     return vscode.window.showQuickPick(Object.keys(truncatedPathMap), {
         placeHolder: getPlaceholder(action)
-    }).then<string | Promise<never>>((choice?: string) => {
+    }).then<string | never>((choice?: string) => {
         if (!choice) {
             // User canceled.
             return Promise.reject(CANCEL);
