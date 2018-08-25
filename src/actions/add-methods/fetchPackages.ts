@@ -4,7 +4,8 @@ import fetch from 'node-fetch';
 
 import { CANCEL } from '../../constants';
 import { getFetchOptions } from '../../utils';
-import { getNuGetSearchUrl } from './'
+import { getNuGetUrls } from './'
+import handleSearchResponse from './handleSearchResponse';
 
 export default function fetchPackages(input: string): Promise<Response> | Promise<never> {
     if (!input) {
@@ -20,9 +21,27 @@ export default function fetchPackages(input: string): Promise<Response> | Promis
         take: '100'
     });
 
-    return getNuGetSearchUrl()
-        .then((searchUrls) => {
-            const searchUrl = searchUrls[0];
-            return fetch(`${searchUrl}?${queryParams}`, getFetchOptions(vscode.workspace.getConfiguration('http')));
+    return getNuGetUrls()
+        .then((nugetUrls) => {
+            // const searchUrls = nugetjUrls.map((urls) => urls.searchUrl);
+            const searchPromises = nugetUrls.map((urls) =>
+                fetch(`${urls.searchUrl}?${queryParams}`, getFetchOptions(vscode.workspace.getConfiguration('http')))
+                    .then(handleSearchResponse)
+                    .then((json) => !json ? json : { ...json, ...urls })
+            );
+            return Promise.all(searchPromises)
+                .then((jsons) => jsons.reduce((newJson, json) => {
+                    if (!json) {
+                        return newJson;
+                    }
+
+                    newJson.data = newJson.data.concat(json.data.map((packageName) => ({
+                        packageName,
+                        searchUrl: json.searchUrl,
+                        versionUrl: json.versionUrl,
+                        hostName: json.hostName,
+                    })));
+                    return newJson;
+                }, { data: [] }));
         });
 }

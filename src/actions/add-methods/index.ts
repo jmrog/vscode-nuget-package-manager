@@ -7,7 +7,7 @@ import showPackageQuickPick from './showPackageQuickPick';
 import showSearchBox from './showSearchBox';
 import showVersionsQuickPick from './showVersionsQuickPick';
 import writeFile from './writeFile';
-import getNuGetSearchUrl from './getNuGetSearchUrl';
+import getNuGetUrls from './getNuGetUrls';
 
 export {
     fetchPackages,
@@ -19,5 +19,5 @@ export {
     showSearchBox,
     showVersionsQuickPick,
     writeFile,
-    getNuGetSearchUrl
+    getNuGetUrls
 };

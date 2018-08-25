@@ -2,11 +2,11 @@ import * as vscode from 'vscode';
 import fetch from 'node-fetch';
 
 import { clearStatusBar } from '../shared';
-import { NUGET_VERSIONS_URL, CANCEL } from '../../constants';
+import { CANCEL } from '../../constants';
 import { getFetchOptions } from '../../utils';
 
-export default function fetchPackageVersions(selectedPackageName: string, versionsUrl: string = NUGET_VERSIONS_URL): Promise<any> | Promise<never> {
-    if (!selectedPackageName) {
+export default function fetchPackageVersions({ packageName, versionUrl }: { packageName: string; versionUrl: string }): Promise<any> | Promise<never> {
+    if (!packageName) {
         // User has canceled the process.
         return Promise.reject(CANCEL);
     }
@@ -14,10 +14,10 @@ export default function fetchPackageVersions(selectedPackageName: string, versio
     vscode.window.setStatusBarMessage('Loading package versions...');
 
     return new Promise((resolve) => {
-        fetch(`${versionsUrl}${selectedPackageName}/index.json`, getFetchOptions(vscode.workspace.getConfiguration('http')))
+        fetch(`${versionUrl}${packageName}/index.json`, getFetchOptions(vscode.workspace.getConfiguration('http')))
             .then((response: Response) => {
                 clearStatusBar();
-                resolve({ response, selectedPackageName });
+                resolve({ response, packageName });
             });
     });
 }

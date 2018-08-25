@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as url from 'url';
 import { parseString } from 'xml2js';
 
-import { dedupeArray, flattenNestedArray } from '../../utils';
-import { NUGET_SEARCH_URL } from '../../constants';
+import { dedupeArray, flattenNestedArray, getFetchOptions } from '../../utils';
+import { NUGET_SEARCH_URL, NUGET_VERSIONS_URL } from '../../constants';
 
 const nuGetConfigMatcher = /^nuget\.config$/i;
+const finalSlashMatcher = /\/$/;
 
 /**
  * TODO: Document limitations:
@@ -16,6 +18,7 @@ const nuGetConfigMatcher = /^nuget\.config$/i;
 // FIXME: handle errors as in rest of project
 
 // TODO: better typing
+// Reference: https://docs.microsoft.com/en-us/nuget/reference/nuget-config-file#package-source-sections
 function getPackageSourcesFromConfig(parsedNuGetConfig: any = {}): Array<string> {
     const { configuration = {} } = parsedNuGetConfig;
     const { packageSources = [] } = configuration as any;
@@ -70,10 +73,36 @@ function getNuGetConfigContents(configPaths: Array<string>): Promise<Array<strin
     return Promise.all(readPromises);
 }
 
-export default function getNuGetSearchUrls(): Promise<Array<string> | never> {
+// Reference: https://docs.microsoft.com/en-us/nuget/api/service-index
+function getSearchAndVersionUrls(nugetRepoBaseUrls: string[]) {
+    const fetchPromises = nugetRepoBaseUrls.map((baseUrl) => {
+        baseUrl = finalSlashMatcher.test(baseUrl) ? `${baseUrl}/index.json` : baseUrl;
+        const hostName = url.parse(baseUrl).hostname;
+        return fetch(baseUrl, getFetchOptions(vscode.workspace.getConfiguration('http')))
+            .then((res) => res.json())
+            .then((json) => {
+                const { resources } = json;
+                const searchUrl = resources.find((resource) => resource['@type'].startsWith('SearchAutocompleteService'))['@id'];
+                const versionUrl = resources.find((resource) => resource['@type'].startsWith('PackageBaseAddress'))['@id'];
+                return {
+                    hostName,
+                    searchUrl,
+                    versionUrl,
+                };
+            });
+    });
+
+    return Promise.all(fetchPromises);
+}
+
+export default function getNuGetUrls(): Promise<Array<{ searchUrl: string; versionUrl: string; }> | never> {
     const ngpmConfiguration = vscode.workspace.getConfiguration('ngpm');
     const useLocalNuGetConfigs = ngpmConfiguration.get<boolean>('useLocalNuGetConfigs') || false;
-    const defaultPackageSources = [NUGET_SEARCH_URL];
+    const defaultPackageSources = [{
+        hostName: url.parse(NUGET_SEARCH_URL).hostname,
+        searchUrl: NUGET_SEARCH_URL,
+        versionUrl: NUGET_VERSIONS_URL,
+    }];
 
     if (!useLocalNuGetConfigs) {
         return Promise.resolve(defaultPackageSources);
@@ -88,13 +117,16 @@ export default function getNuGetSearchUrls(): Promise<Array<string> | never> {
         });
     });
 
+    const includeDefaultPackageSources = ngpmConfiguration.get<boolean>('includeDefaultPackageSources') || true;
+
     return readDirPromise
         .then((files) => {
             const workspaceConfig = files.find((filename) => nuGetConfigMatcher.test(filename));
-            const pathsToNuGetConfigs = ngpmConfiguration.get<Array<string>>('nugetConfigLocations') || [];
+            const pathsToNuGetConfigs = ngpmConfiguration.get<Array<string>>('nonRootNugetConfigLocations') || [];
 
             if (workspaceConfig) {
-                // Prefer the workspace's config to all others (by putting it first).
+                // Prefer the workspace's config to all others (by putting it first). This is
+                // because "closer" configs take precedence: https://docs.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior#how-settings-are-applied
                 pathsToNuGetConfigs.unshift(path.join(vscode.workspace.rootPath, workspaceConfig));
             }
 
@@ -102,6 +134,14 @@ export default function getNuGetSearchUrls(): Promise<Array<string> | never> {
         })
         .then(getNuGetConfigContents)
         .then(getPackageSourcesFromConfigs)
-        // TODO: determine whether to add defaultPackageSources to the found package sources
-        .then((nestedPackageSources) => flattenNestedArray(nestedPackageSources));
+        .then((nestedPackageSources) => flattenNestedArray(nestedPackageSources))
+        .then((packageSources) => {
+            const additionalNugetRepos = ngpmConfiguration.get<Array<string>>('additionalNugetRepos');
+            if (additionalNugetRepos && additionalNugetRepos.length > 0) {
+                return packageSources.concat(additionalNugetRepos);
+            }
+            return packageSources;
+        })
+        .then(getSearchAndVersionUrls)
+        .then((nugetDetails) => includeDefaultPackageSources ? defaultPackageSources.concat(nugetDetails) : nugetDetails);
 }

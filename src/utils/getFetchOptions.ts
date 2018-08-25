@@ -2,6 +2,7 @@ import * as url from 'url';
 import * as HttpsProxyAgent from 'https-proxy-agent';
 
 import { RESPONSE_TIMEOUT } from '../constants';
+import { WorkspaceConfiguration } from 'vscode';
 
 // Cache a few things since this stuff will rarely change, and there's no need to recreate an agent
 // if no change has occurred, etc.
@@ -9,14 +10,10 @@ let lastProxy = '';
 let lastProxyStrictSSL: boolean;
 let lastHttpsProxyAgent: any;
 
-interface ProxyConfiguration {
-    proxy?: string;
-    proxyAuthorization?: string | null;
-    proxyStrictSSL?: boolean;
-}
-
-export default function getFetchOptions(configuration?: ProxyConfiguration) {
-    const { proxy, proxyAuthorization, proxyStrictSSL } = configuration || {} as ProxyConfiguration;
+export default function getFetchOptions(configuration?: WorkspaceConfiguration) {
+    const proxy = configuration.get<string>('proxy');
+    const proxyAuthorization = configuration.get<string | null>('proxyAuthorization');
+    const proxyStrictSSL = configuration.get<boolean>('proxyStrictSSL');
     const fetchOptions: any = { timeout: RESPONSE_TIMEOUT };
 
     if (!proxy) {
