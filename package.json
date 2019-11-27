@@ -27,7 +27,8 @@
     ],
     "activationEvents": [
         "onCommand:extension.addNuGetPackage",
-        "onCommand:extension.removeNuGetPackage"
+        "onCommand:extension.removeNuGetPackage",
+        "onCommand:extension.changeNuGetPackage"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -39,6 +40,10 @@
             {
                 "command": "extension.removeNuGetPackage",
                 "title": "NuGet Package Manager: Remove Package"
+            },
+            {
+                "command": "extension.changeNuGetPackage",
+                "title": "NuGet Package Manager: Change Package Version"
             }
         ]
     },
