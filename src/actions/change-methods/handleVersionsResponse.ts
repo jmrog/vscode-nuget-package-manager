@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-import { CANCEL } from '../../constants';
 import { handleError } from '../../utils';
 
 export default function handleVersionsResponse({ response, selectedPackage, selectedPackageVersion }: { response: Response, selectedPackage: string, selectedPackageVersion:string }): Promise<any> | Promise<never> {
