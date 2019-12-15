@@ -1,18 +1,14 @@
 import * as vscode from 'vscode';
 
 export default function showPackagesQuickPick({
-    projFileFullPath,
+    projFileFullPath: string,
     installedPackages,
-    packageRefSection,
-    parsed,
-    originalContents
-}: any): Thenable<any> {
+    ...otherPackageData
+}: any): Thenable<string> {
     return vscode.window.showQuickPick(installedPackages)
         .then((selectedPackage: string | undefined) => ({
-            projFileFullPath,
+            projFileFullPath: string,
             selectedPackage,
-            parsed,
-            packageRefSection,
-            originalContents
+            ...otherPackageData
         }));
 }
