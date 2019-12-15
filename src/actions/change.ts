@@ -1,11 +1,9 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 
-import { emptyString, CANCEL, REMOVE } from '../constants';
+import { CANCEL, REMOVE } from '../constants';
 import { showInformationMessage, clearStatusBar, checkProjFilePath, showProjFileQuickPick } from './shared';
 
 import {
-    showSearchBox,
     showPackagesQuickPick,
     fetchPackageVersions,
     showVersionsQuickPick,
