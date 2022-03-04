@@ -10,13 +10,11 @@ export default function fetchPackageVersions(selectedPackageName: string, versio
         // User has canceled the process.
         return Promise.reject(CANCEL);
     }
-    
-    selectedPackageName = selectedPackageName.toLowerCase();
 
     vscode.window.setStatusBarMessage('Loading package versions...');
 
     return new Promise((resolve) => {
-        fetch(`${versionsUrl}${selectedPackageName}/index.json`, getFetchOptions(vscode.workspace.getConfiguration('http')))
+        fetch(`${versionsUrl}${selectedPackageName.toLowerCase()}/index.json`, getFetchOptions(vscode.workspace.getConfiguration('http')))
             .then((response: Response) => {
                 clearStatusBar();
                 resolve({ response, selectedPackageName });
