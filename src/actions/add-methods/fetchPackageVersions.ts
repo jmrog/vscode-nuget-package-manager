@@ -10,6 +10,8 @@ export default function fetchPackageVersions(selectedPackageName: string, versio
         // User has canceled the process.
         return Promise.reject(CANCEL);
     }
+    
+    selectedPackageName = selectedPackageName.toLowerCase();
 
     vscode.window.setStatusBarMessage('Loading package versions...');
 
